@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Module 17 challenge - Create an app from scratch and practice using MongoDB.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
