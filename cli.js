@@ -1,31 +1,76 @@
 import mongoose from "mongoose";
+import inquirer from "inquirer";
 import { createUser, getUserById } from "./social-network-api/controllers/userController.js";
 import { createThought, getThoughtById } from "./social-network-api/controllers/thoughtController.js";
 
 import("./social-network-api/config/connection.js").then(() => {
     console.log("Connected to MongoDB for CLI operations.");
-    handleCLI();
+    showMenu();
 });
 
-function handleCLI() {
-    const [,, command, ...args] = process.argv;
+async function showMenu() {
+    const { command } = await inquirer.prompt({
+        type: 'list',
+        name: 'command',
+        message: 'Choose an action:',
+        choices: [
+            'Add User',
+            'Get User',
+            'Add Thought',
+            'Get Thought',
+            'Exit'
+        ],
+    });
 
     switch (command) {
-        case "addUser":
-            createUserCommand(args);
+        case 'Add User':
+            await addUserPrompt();
             break;
-        case "getUser":
-            getUserByIdCommand(args[0]);
+        case 'Get User':
+            await getUserPrompt();
             break;
-        case "addThought":
-            createThoughtCommand(args);
+        case 'Add Thought':
+            await addThoughtPrompt();
             break;
-        case "getThought":
-            getThoughtByIdCommand(args[0]);
+        case 'Get Thought':
+            await getThoughtPrompt();
             break;
-        default:
-            console.log("Unknown command");
+        case 'Exit':
+            console.log("Exiting CLI.");
+            process.exit();
     }
+
+    showMenu();
+}
+
+async function addUserPrompt() {
+    const answers = await inquirer.prompt([
+        { type: 'input', name: 'username', message: 'Enter username:' },
+        { type: 'input', name: 'email', message: 'Enter email:' },
+    ]);
+    await createUserCommand([answers.username, answers.email]);
+}
+
+async function getUserPrompt() {
+    const { id } = await inquirer.prompt([
+        { type: 'input', name: 'id', message: 'Enter user ID:' },
+    ]);
+    await getUserByIdCommand(id);
+}
+
+async function addThoughtPrompt() {
+    const answers = await inquirer.prompt([
+        { type: 'input', name: 'thoughtText', message: 'Enter thought text:' },
+        { type: 'input', name: 'username', message: 'Enter username for the thought:' },
+    ]);
+    await createThoughtCommand([answers.thoughtText, answers.username]);
+}
+
+async function getThoughtPrompt() {
+    const { id } = await inquirer.prompt([
+        { type: 'input', name: 'id', message: 'Enter thought ID:' },
+    ]);
+    await getThoughtByIdCommand(id);
 }
 
 async function createUserCommand(args) {
