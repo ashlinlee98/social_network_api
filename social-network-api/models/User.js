@@ -23,7 +23,6 @@ const userSchema = new mongoose.Schema({
   }],
 });
 
-// Virtual for friend count
 userSchema.virtual('friendCount').get(function() {
   return this.friends.length;
 });
