@@ -47,3 +47,49 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ message: 'Error deleting user' });
   }
 };
+
+export const addFriend = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const friend = await User.findById(req.params.friendId);
+    
+    if (!user || !friend) {
+      return res.status(404).json({ message: 'User or friend not found' });
+    }
+
+    if (user.friends.includes(friend._id)) {
+      return res.status(400).json({ message: 'Already friends' });
+    }
+
+    user.friends.push(friend._id);
+    await user.save();
+
+    friend.friends.push(user._id);
+    await friend.save();
+
+    res.json({ message: 'Friend added', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding friend' });
+  }
+};
+
+export const removeFriend = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    const friend = await User.findById(req.params.friendId);
+    
+    if (!user || !friend) {
+      return res.status(404).json({ message: 'User or friend not found' });
+    }
+
+    user.friends.pull(friend._id);
+    await user.save();
+
+    friend.friends.pull(user._id);
+    await friend.save();
+
+    res.json({ message: 'Friend removed', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Error removing friend' });
+  }
+};
