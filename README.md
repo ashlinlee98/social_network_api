@@ -12,6 +12,7 @@
   - [Contributing](#contributing)
   - [Tests](#tests)
   - [Questions](#questions)
+  - [Functionaliy-Video](#functionality-video)
 
   ## Installation
   1. Clone the repository from GitHub.
@@ -41,4 +42,7 @@ Link: (https://img.shields.io/badge/License-MIT.svg)
 
   ## Questions
   If you have any questions, feel free to reach out to ashlinlee98 via [GitHub](https://github.com/ashlinlee98) or email at ashlinlee98@gmail.com.
+
+  # Functionality Video
+  https://drive.google.com/file/d/1c9VOxePkuqb1r9fIbWTL-cRLRkIdtZp6/view?usp=sharing
   
